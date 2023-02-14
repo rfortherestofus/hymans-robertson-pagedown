@@ -69,14 +69,14 @@ a > code {
 }
 
 .title-slide h1 {
-  font-size: 100px;
+  font-size: 90px;
   letter-spacing: -2px
 }
 
 .title-slide h2,
 .title-slide h3 {
-  font-size: 50px;
-  font-weight: 400;
+  font-size: 40px;
+  font-weight: 300;
 }
 
 /* Slide layout */
