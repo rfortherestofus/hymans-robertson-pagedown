@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>No Designer Needed: How to Create Beautiful Reports Using Only R</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs-2.20/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+    <script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# No Designer Needed: How to Create Beautiful Reports Using Only R
+]
+
+---
+
+
+
+
+
+
+
+class: inverse, center, middle
+
+# Hi, I'm David
+
+.headshot[
+![](img/dk-square.jpg)
+]
+
+
+---
+
+class: center, middle
+
+&lt;img src="img/rru-logo-text-right.svg" width="1000px" /&gt;
+
+---
+
+class: sample-report, center, middle
+
+![](img/cbem-sample.png)
+
+---
+
+class: sample-report, center, middle
+
+![](img/census-report-sample.png)
+
+---
+
+class: sample-report, center, middle
+
+![](img/ivac-2022-sample.png)
+
+
+
+---
+
+class: sample-report, center, middle
+
+![](img/pmp-single-page.png)
+
+
+
+
+---
+
+class: sample-report, center, middle
+
+![](img/ohdc-report.gif)
+
+
+---
+
+
+class: inverse, center, middle
+
+background-image:url("img/page.jpg")
+
+# `pagedown`
+
+---
+
+## The Problem
+
+--
+
+We often need to create PDF reports from RMarkdown
+
+--
+
+PDFs are portable
+
+--
+
+PDFs are widely used
+
+
+---
+
+## Potential Solution #1
+
+Work with a graphic designer
+
+---
+
+class: center, middle
+
+![](img/ivac-sample.png)
+
+---
+
+## Potential Solution #2
+
+
+R users usually think of LaTex to make PDFs from RMarkdown, but there are some problems:
+
+---
+
+### The Default Output Looks Awful
+
+--
+
+&lt;img src="https://i.stack.imgur.com/Nug7W.png" height="250px" style="display: block; margin: auto;" /&gt;
+
+---
+
+### LaTeX is Terrible
+
+---
+
+class: center, middle
+
+![](img/Capture-2023-02-14-140336.png)
+
+
+
+
+
+---
+
+class: center, middle
+
+![](img/Capture-2023-02-14-140501.png)
+
+
+
+---
+
+class: center, middle
+
+![](img/Capture-2023-02-14-140523.png)
+
+
+
+
+
+
+
+
+
+---
+
+class: inverse, center, middle
+
+# The Solution: `pagedown`
+
+---
+
+## Why `pagedown`?
+
+--
+
+You can use tools like HTML and CSS to format your documents:
+
+--
+
++ Way easier than LaTeX to learn
+
+--
+
++ Easier to reuse parts on a website or in other formats (like `xaringan` or `blogdown`)
+
+--
+
++ Outputs generally looks nicer than LaTeX
+
+
+
+---
+
+class: sample-report, center, middle
+
+![](img/cbem-sample.png)
+
+---
+
+class: sample-report, center, middle
+
+![](img/ivac-2022-sample.png)
+
+---
+
+class: center, middle
+
+&lt;img src="img/cbem-sample.png" width="80%" /&gt;
+
+
+
+---
+
+## How `pagedown` Works
+
+--
+
+**`pagedown`** is an R package that provides custom output formats:
+
+--
+
++ you call it through `pagedown::html_paged` in the YAML header
+
+--
+
++ and use the `css` argument to provide a custom style sheet
+
+--
+
+
+```yaml
+---
+  title: "My title"
+date: "May 2022"
+*output:
+* pagedown::html_paged:
+* css: "style.css"
+*knit: pagedown::chrome_print
+---
+```
+
+
+---
+
+## Behind the Scenes
+
+--
+
+
+&lt;img src="img/pagedown_process.png" width="900px" height="300px" style="display: block; margin: auto auto auto 0;" /&gt;
+
+--
+
+1. `pagedown` + `rmarkdown` translate the document into an **HTML** file (using Pandoc)
+
+--
+
+2. `pagedown` calls Paged.js, which puts things into the right place to look like "pages"
+
+--
+
+3. The `pagedown::chrome_print` function converts the HTML document to PDF
+
+
+---
+
+class: inverse, center, middle
+
+# HTML and CSS
+
+---
+
+## HTML and CSS
+
+--
+
+- HTML creates the bricks of your document
+
+--
+
++ Large brick (h1, h2, h3, etc)
+
+--
+
++ Regular text brick (p)
+
+--
+
+- CSS is what the bricks look like
+
+--
+
++ size
+
+--
+
++ color
+
+--
+
++ shape
+
+
+---
+
+class: center, middle
+
+
+&lt;img src="img/html-css-lego.png" width="800px" /&gt;
+
+---
+
+## HTML in `pagedown`
+
+`pagedown` uses the Paged.js library, which gives us some specific ways to format our document you won't see anywhere else in the world of HTML
+
+---
+
+class: center, middle
+
+
+&lt;img src="img/pagedjs-overview.png" width="45%" /&gt;
+
+---
+
+class: inverse, center, middle
+
+# Let's Make a `pagedown` Report!
+
+---
+
+## Install `pagedown`
+
+
+```r
+install.packages("pagedown")
+```
+
+---
+
+## Create a Document
+
+![](img/pagedown-from-template.png)
+
+---
+
+class: inverse, center, middle
+
+# Page Size
+
+
+---
+
+## Page Size
+
+
+To handle pages, `pagedown` has a special CSS element called `@page`:
+
+--
+
++ you can (and must) set its size at the beginning 
+
+--
+
+
+```css
+@page {
+size: 8.5in 11in;
+}
+```
+
+
+---
+
+class: inverse, center, middle
+
+# Margins
+
+---
+
+## Margins
+
+
+```css
+:root {
+--pagedjs-margin-left: 0.75in;
+--pagedjs-margin-right: 0.75in;
+--pagedjs-margin-bottom: 1.25in;
+--pagedjs-margin-top: 1in;
+}
+```
+
+
+---
+
+class: inverse, center, middle
+
+# Fonts
+
+---
+
+## Fonts
+
+
+```css
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap");
+```
+
+---
+
+## Fonts
+
+
+```css
+body {
+font-family: Inter, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+font-weight: 700;
+}
+
+p {
+font-size: 12pt;
+}
+```
+
+---
+
+## Fonts
+
+
+```css
+blockquote {
+margin-inline-start: 0;
+color: #6cabdd;
+padding-left: 10pt;
+border-left: 2pt solid #6cabdd;
+font-style: italic;
+}
+```
+
+
+---
+
+class: inverse, center, middle
+
+# Footer
+
+---
+
+class: center, middle
+
+&lt;img src="img/pagedjs-overview.png" width="45%" /&gt;
+
+---
+
+
+## Footer
+
+
+```css
+@page {
+size: 8.5in 11in;
+
+@bottom-left-corner {
+content: "";
+background-image: url(rru-logo-blue.svg);
+background-repeat: no-repeat;
+background-size: 0.5in;
+background-position: center;
+}
+
+@bottom-right-corner {
+content: counter(page);
+color: grey;
+font-size: 10pt;
+}
+
+}
+```
+
+---
+
+class: inverse, center, middle
+
+# Cover Page
+
+
+---
+
+## Cover Page
+
+
+```css
+@page:first{
+background: linear-gradient(130deg, black, transparent),
+url(dark-hex-pattern.svg);
+background-repeat: no-repeat;
+background-size: cover;
+
+@bottom-left-corner {
+background: none;
+}
+
+@bottom-right-corner {
+content: none;
+}
+};
+```
+
+
+---
+
+## Cover Page
+
+
+```css
+h1.title {
+color: white;
+font-size: 36pt;
+}
+
+h2.date {
+color: white;
+font-weight: normal;
+font-size: 18pt;
+page-break-after: always;
+}
+```
+
+---
+
+class: inverse, center, middle
+
+# Multicolumn Layouts
+
+---
+
+class: sample-report, center, middle
+
+
+![](img/psc-sample-2-pages.png)
+
+
+
+---
+
+## Multicolumn Layouts
+
+
+```css
+img {
+max-width: 100%;
+}
+
+.wrap-columns {
+display: flex;
+padding: 0 0pt;
+}
+
+.columns-50 {
+flex: 50%;
+}
+```
+
+---
+
+class: inverse, center, middle
+
+# Summing Up
+
+---
+
+## Summing Up
+
+--
+
+- You can make nice PDFs straight from R
+
+--
+
+- You do need to know some HTML and CSS
+
+--
+
+- At least it's not LaTeX!
+
+---
+
+class: inverse, center, middle
+
+# Put Your Template in a Package
+
+---
+
+class: sample-report, center, middle
+
+![](img/omni-report.gif)
+
+---
+
+class: inverse, center, middle
+
+# `pagedreport`
+
+---
+
+class: center, middle
+
+![](img/windmill.gif)
+
+pagedreport.rfortherestofus.com
+
+---
+
+class: inverse, center, middle
+
+# Quarto?
+
+---
+
+class: center, middle
+
+![](img/quarto-2023.png)
+
+???
+
+https://github.com/quarto-dev/quarto-cli/discussions/1716
+
+---
+
+class: inverse, center, middle
+
+background-image:url("img/mine.jpg")
+
+# Additional Resources
+
+---
+
+## Additional Resources
+
+--
+
++ To learn more about `pagedown`, you can have a look at the [documentation](https://pagedown.rbind.io/) or the [issues](https://github.com/rstudio/pagedown/issues) on Github
+
+--
+
++ To get a deeper knowledge of the foundations, look at the Paged.js [documentation](https://Pagedjs.org/documentation/) or their [Gitlab](https://gitlab.coko.foundation/Pagedjs/Pagedjs)
+
+--
+
++ To learn HTML and CSS, you can either have a look at Mozilla tutorial ([HTML](https://developer.mozilla.org/en/docs/Web/HTML) + [CSS](https://developer.mozilla.org/en/docs/Web/CSS)) or the W3C tutorial ([HTML](https://www.w3schools.com/html/) + [CSS](https://www.w3schools.com/css/))
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

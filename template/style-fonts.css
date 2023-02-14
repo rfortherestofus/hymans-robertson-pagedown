@@ -1,0 +1,41 @@
+/* Fonts */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
+body {
+  font-family: Inter, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+}
+
+p {
+  font-size: 12pt;
+}
+
+blockquote {
+  margin-inline-start: 0;
+  color: #6cabdd;
+  padding-left: 10pt;
+  border-left: 2pt solid #6cabdd;
+  font-style: italic;
+}
+
+/* Page and Margins */
+
+@page {
+  size: 8.5in 11in;
+}
+
+:root {
+  --pagedjs-margin-left: 0.75in;
+  --pagedjs-margin-right: 0.75in;
+  --pagedjs-margin-bottom: 1.25in;
+  --pagedjs-margin-top: 1in;
+}

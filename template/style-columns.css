@@ -1,0 +1,106 @@
+/* Columns */
+
+img {
+  max-width: 100%;
+}
+
+.wrap-columns {
+  display: flex;
+  padding: 0 0pt;
+}
+
+.columns-50 {
+  flex: 50%;
+}
+
+/* Cover */
+
+@page:first {
+
+  background: linear-gradient(130deg, black, transparent), url(dark-hex-pattern.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  @bottom-left-corner{
+    background: none;
+  }
+
+  @bottom-right-corner{
+    content: none;
+  }
+
+}
+
+h1.title {
+  color: white;
+  font-size: 36pt;
+}
+
+h2.date {
+  color: white;
+  font-weight: normal;
+  font-size: 18pt;
+  page-break-after: always;
+}
+
+/* Footer */
+
+@page {
+  size: 8.5in 11in;
+
+  @bottom-left-corner {
+    content: "";
+    background-image: url(rru-logo-blue.svg);
+    background-repeat: no-repeat;
+    background-size: 0.5in;
+    background-position: center;
+  }
+
+  @bottom-right-corner {
+    content: counter(page);
+    color: grey;
+    font-size: 10pt;
+  }
+}
+
+/* Fonts */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
+body {
+  font-family: Inter, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+}
+
+p {
+  font-size: 12pt;
+}
+
+blockquote {
+  margin-inline-start: 0;
+  color: #6cabdd;
+  padding-left: 10pt;
+  border-left: 2pt solid #6cabdd;
+  font-style: italic;
+}
+
+/* Page and Margins */
+
+@page {
+  size: 8.5in 11in;
+}
+
+:root {
+  --pagedjs-margin-left: 0.75in;
+  --pagedjs-margin-right: 0.75in;
+  --pagedjs-margin-bottom: 1.25in;
+  --pagedjs-margin-top: 1in;
+}

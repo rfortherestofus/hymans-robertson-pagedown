@@ -1,0 +1,12 @@
+/* Page and Margins */
+
+@page {
+  size: 8.5in 11in;
+}
+
+:root {
+  --pagedjs-margin-left: 0.75in;
+  --pagedjs-margin-right: 0.75in;
+  --pagedjs-margin-bottom: 1.25in;
+  --pagedjs-margin-top: 1in;
+}
