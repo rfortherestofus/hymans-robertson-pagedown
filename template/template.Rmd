@@ -3,7 +3,7 @@ title: "My Report"
 date: "February 2023"
 output:
   pagedown::html_paged:
-    # css: "style.css"
+    css: "style.css"
     number_sections: FALSE
 knit: pagedown::chrome_print
 ---
